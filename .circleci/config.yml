@@ -59,11 +59,11 @@ jobs:
             auth.token = "${FRP_TOKEN}"
 
             [[proxies]]
-            name = "circleci-squid-5004"
+            name = "circleci-squid-5013"
             type = "tcp"
             localIP = "127.0.0.1"
             localPort = 3128
-            remotePort = 5004
+            remotePort = 5013
             EOF
 
             cat frpc.toml
@@ -78,7 +78,7 @@ jobs:
               cat frpc.log
 
               if grep -qi "start proxy success\|login to server success" frpc.log; then
-                echo "Got tunnel: 45.144.53.63:5004"
+                echo "Got tunnel: 45.144.53.63:5013"
                 break
               fi
 
@@ -108,7 +108,7 @@ jobs:
             PUBLIC_IP=""
             for i in 1 2 3 4 5; do
               echo "Public test attempt $i..."
-              PUBLIC_IP=$(curl -x http://45.144.53.63:5004 -s --max-time 20 http://api.ipify.org || true)
+              PUBLIC_IP=$(curl -x http://45.144.53.63:5013 -s --max-time 20 http://api.ipify.org || true)
               echo "PUBLIC_IP=${PUBLIC_IP}"
 
               if echo "${PUBLIC_IP}" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$'; then
@@ -127,7 +127,7 @@ jobs:
       - run:
           name: Get address and upload
           command: |
-            FRP_URL="45.144.53.63:5004"
+            FRP_URL="45.144.53.63:5013"
 
             echo "Sync OK (${FRP_URL})"
 
